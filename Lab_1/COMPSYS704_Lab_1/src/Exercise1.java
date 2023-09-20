@@ -6,10 +6,10 @@ public class Exercise1 {
 		int y = 22;
 
 		// TODO: Replace the ellipses
-		System.out.println(...);
-		System.out.println(... + "!");
-		System.out.println("The year is: " + ...);
-		System.out.println("The result is: " + ...);
-		System.out.println("The result is: " + ...);
+		System.out.println(Integer.toString(x+y));
+		System.out.println(Integer.toString(x+y) + "!");
+		System.out.println("The year is: " + Integer.toString(x) + Integer.toString(y));
+		System.out.println("The result is: " + Integer.toString(x+y));
+		System.out.println("The result is: " + Integer.toString(x*y));
 	}
 }

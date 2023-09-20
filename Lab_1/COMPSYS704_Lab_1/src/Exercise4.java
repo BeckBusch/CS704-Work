@@ -11,8 +11,7 @@ public class Exercise4 {
 	static void call(List x) {
 		System.out.println("call2");
 	}
-	// TODO: Replace the ellipsis
-	static void call(...) {
+	static void call(Vector i) {
 		System.out.println("call3");
 	}
 }
