@@ -1,0 +1,33 @@
+import guicreate.ConveyorVisual;
+import fibonacci.FibonacciGenerator;
+
+CD->{
+	//===RUN ONCE
+	signal A;
+	
+	//=========
+	{ // First reaction
+		ConveyorVisual guiObj = new ConveyorVisual();
+		//FibonacciGenerator f = new FibonacciGenerator();
+		while(true) {
+			
+			trap(T){
+				present(A){
+					System.out.println("Got a");
+					//System.out.println(f.getNext());	
+					//guiObj.bottle5.setVisible(true);
+					exit(T);
+					} else {
+						pause;
+					}
+			} do {
+				halt;
+			}
+		
+		}
+	}
+	||
+	{ // Second reaction
+		emit A;
+	}
+}
