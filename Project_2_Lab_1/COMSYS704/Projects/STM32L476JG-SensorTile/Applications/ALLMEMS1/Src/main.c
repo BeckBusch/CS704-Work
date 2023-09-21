@@ -262,13 +262,13 @@ int main(void)
   //***************************************************
 
   //#CS704 - use this to set BLE Device Name
-  NodeName[1] = 'A';
-  NodeName[2] = 'B';
-  NodeName[3] = 'C';
-  NodeName[4] = 'D';
-  NodeName[5] = 'E';
-  NodeName[6] = 'F';
-  NodeName[7] = 'G';
+  NodeName[1] = 'C';
+  NodeName[2] = 'S';
+  NodeName[3] = ' ';
+  NodeName[4] = '7';
+  NodeName[5] = '0';
+  NodeName[6] = '4';
+  NodeName[7] = ' ';
 
   startMag();
   startAcc();
@@ -277,7 +277,6 @@ int main(void)
   //***************************************************
   //************ Initialise ends **********************
   //***************************************************
-
 
   /* Infinite loop */
   while (1)
@@ -322,7 +321,24 @@ int main(void)
     	COMP_Value.y=120;
     	COMP_Value.Heading+=10;
 
+    	XPRINTF("**STEP INCREMENTS = %d**\r\n",(int)COMP_Value.x);
+
     }
+
+    ACC_Value.x += 1;
+    ACC_Value.y += 1;
+    ACC_Value.z += 1;
+
+    MAG_Value.x += 1;
+    MAG_Value.y += 1;
+    MAG_Value.z += 1;
+
+    COMP_Value.x += 1;
+    COMP_Value.y += 1;
+    COMP_Value.Heading += 1;
+
+
+    SendAccGyroMag = 1;
 
     //***************************************************
     //***************************************************
