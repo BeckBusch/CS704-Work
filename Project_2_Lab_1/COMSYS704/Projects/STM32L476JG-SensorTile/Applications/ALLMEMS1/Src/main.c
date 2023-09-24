@@ -185,73 +185,114 @@ static void InitLSM() {
 
   //Read IAM registers for Acc and Mag to verify connection - READ
   BSP_LSM303AGR_ReadReg_Mag(0x4F, inData, 1);
-  XPRINTF("IAM Mag= %d,%d", inData[0], inData[1]);
+  XPRINTF("IAM Mag= %d,%d", inData[0], inData[1]); // PRINTER
   BSP_LSM303AGR_ReadReg_Acc(0x0F, inData, 1);
-  XPRINTF("IAM Acc= %d,%d", inData[0], inData[1]);
+  XPRINTF("IAM Acc= %d,%d", inData[0], inData[1]); // PRINTER
 }
 
 
-static void startMag() {
+static void startMag() { //#CS704 - Write SPI commands to initiliase Magnetometer
   uint8_t inData;
 
-  //#CS704 - Write SPI commands to initiliase Magnetometer
   inData = 0b00000000; // No temp comp, no reboot, no reset, no low power, 10Hz, continous mode
-  BSP_LSM303AGR_WriteReg_Mag(0x60, inData, 1);
+  BSP_LSM303AGR_WriteReg_Mag(0x60, &inData, 1);
   inData = 0b00000000; // null, null, null, idk and some other stuff
-  BSP_LSM303AGR_WriteReg_Mag(0x61, inData, 1);
+  BSP_LSM303AGR_WriteReg_Mag(0x61, &inData, 1);
   inData = 0b00000001;
-  BSP_LSM303AGR_WriteReg_Mag(0x62, inData, 1);
-
-  //Write CFG_REG_A_M = 00h; // Mag = 10 Hz (high-resolution and continuous mode)
-  //Write CFG_REG_C_M = 01h; // Mag data-ready interrupt enable
+  BSP_LSM303AGR_WriteReg_Mag(0x62, &inData, 1);
 }
 
-static void startAcc() {
+static void startAcc() { //#CS704 - Write SPI commands to initiliase Accelerometer
   uint8_t inData;
 
-  //#CS704 - Write SPI commands to initiliase Accelerometer
-  inData = 0b00100111; // 10Hz, Not Low Power, all Axii enabled
-  BSP_LSM303AGR_WriteReg_Acc(0x20, inData, 1);
   inData = 0b00000000; // No Filtering
-  BSP_LSM303AGR_WriteReg_Acc(0x21, inData, 1);
-  inData = 0b00000000; // No inturrepts, or fifo watermark
-  BSP_LSM303AGR_WriteReg_Acc(0x22, inData, 1);
-  inData = 0b00001000; // Continous write, Big Endian,  +- 2g, High Accuracy Mode, No Self Test, No 3-Wire SPI Interface
-  BSP_LSM303AGR_WriteReg_Acc(0x23, inData, 1);
-  inData = 0b00000000; // Dont Reboot Memory, FIFO Disabled, null, null, int request not latched, no 4d, no latch, no 4d
-  BSP_LSM303AGR_WriteReg_Acc(0x24, inData, 1);
-  inData = 0b00000000; // No interrupts
-  BSP_LSM303AGR_WriteReg_Acc(0x25, inData, 1);
+  BSP_LSM303AGR_WriteReg_Acc(0x21, &inData, 1);
 
-  //Write CTRL_REG1_A = 57h; // Accel = 100 Hz (normal mode)
+  inData = 0b00000000; // No inturrepts, or fifo watermark
+  BSP_LSM303AGR_WriteReg_Acc(0x22, &inData, 1);
+
+  inData = 0b10001001; // non con write, Big Endian,  +- 2g, High Accuracy Mode, No Self Test, No 3-Wire SPI Interface
+  BSP_LSM303AGR_WriteReg_Acc(0x23, &inData, 1);
+
+  inData = 0b00000000; // Dont Reboot Memory, FIFO Disabled, null, null, int request not latched, no 4d, no latch, no 4d
+  BSP_LSM303AGR_WriteReg_Acc(0x24, &inData, 1);
+
+  inData = 0b00000000; // No interrupts
+  BSP_LSM303AGR_WriteReg_Acc(0x25, &inData, 1);
+
+  inData = 0b00100111; // 10Hz, Not Low Power, all Axii enabled
+  BSP_LSM303AGR_WriteReg_Acc(0x20, &inData, 1);
 }
 
-static void readMag() {
+static void readMag() { //#CS704 - Read Magnetometer Data over SPI
+  int16_t xValue, yValue, zValue;
+  uint8_t xFirst, xSecond, yFirst, ySecond, zFirst, zSecond;
+  uint8_t valueReady;
 
-  //#CS704 - Read Magnetometer Data over SPI
+  BSP_LSM303AGR_ReadReg_Mag(0x67, &valueReady, 1); // read acc status reg
+  valueReady = valueReady & (1 << 3); // filter for XYZ New bit
+
+  while (!valueReady) { // if value ready bit not ready
+    // recheck value ready
+    BSP_LSM303AGR_ReadReg_Mag(0x27, &valueReady, 1); // read acc status reg
+    valueReady = valueReady & (1 << 3); // filter for XYZ New bit
+  }
+
+  BSP_LSM303AGR_ReadReg_Mag(0x68, &xFirst, 1);
+  BSP_LSM303AGR_ReadReg_Mag(0x69, &xSecond, 1);
+
+  BSP_LSM303AGR_ReadReg_Mag(0x6A, &yFirst, 1);
+  BSP_LSM303AGR_ReadReg_Mag(0x6B, &ySecond, 1);
+
+  BSP_LSM303AGR_ReadReg_Mag(0x6C, &zFirst, 1);
+  BSP_LSM303AGR_ReadReg_Mag(0x6D, &zSecond, 1);
+
+  xValue = (xSecond << 8) | xFirst;
+  yValue = (ySecond << 8) | yFirst;
+  zValue = (zSecond << 8) | zFirst;
 
   //#CS704 - store sensor values into the variables below
-  MAG_Value.x = 100;
-  MAG_Value.y = 200;
-  MAG_Value.z = 1000;
-
-  //	XPRINTF("MAG=%d,%d,%d\r\n",magx,magy,magz);
+  MAG_Value.x = xValue;
+  MAG_Value.y = yValue;
+  MAG_Value.z = zValue;
 }
 
 static void readAcc() {
-  uint16_t xValue, yValue, zValue;
+  int16_t xValue, yValue, zValue;
   uint8_t xFirst, xSecond, yFirst, ySecond, zFirst, zSecond;
+  uint8_t valueReady;
 
-  //#CS704 - Read Accelerometer Data over SPI
-  xFirst
+  BSP_LSM303AGR_ReadReg_Acc(0x27, &valueReady, 1); // read acc status reg
+  valueReady = valueReady & (1 << 3); // filter for XYZ New bit
+
+  while (!valueReady) { // if value ready bit not ready
+    // recheck value ready
+    BSP_LSM303AGR_ReadReg_Acc(0x27, &valueReady, 1); // read acc status reg
+    valueReady = valueReady & (1 << 3); // filter for XYZ New bit
+  }
+
+  BSP_LSM303AGR_ReadReg_Acc(0x28, &xFirst, 1);
+  BSP_LSM303AGR_ReadReg_Acc(0x29, &xSecond, 1);
+
+  BSP_LSM303AGR_ReadReg_Acc(0x2A, &yFirst, 1);
+  BSP_LSM303AGR_ReadReg_Acc(0x2B, &ySecond, 1);
+
+  BSP_LSM303AGR_ReadReg_Acc(0x2C, &zFirst, 1);
+  BSP_LSM303AGR_ReadReg_Acc(0x2D, &zSecond, 1);
+
+  xValue = (xSecond << 8) | xFirst;
+  yValue = (ySecond << 8) | yFirst;
+  zValue = (zSecond << 8) | zFirst;
 
   //#CS704 - store sensor values into the variables below
-  ACC_Value.x = 100;
-  ACC_Value.y = 200;
-  ACC_Value.z = 1000;
+  ACC_Value.x = xValue;
+  ACC_Value.y = yValue;
+  ACC_Value.z = zValue;
 
-  //	XPRINTF("ACC=%d,%d,%d\r\n",accx,accy,accz);
+  //XPRINTF("ACC=%d,%d,%d\r\n", xValue, yValue, zValue); // PRINTER
 }
+
+
 
 /**
   * @brief  Main program
@@ -259,6 +300,7 @@ static void readAcc() {
   * @retval None
   */
 int main(void) {
+  double heading = 0;
 
   HAL_Init();
 
@@ -291,13 +333,13 @@ int main(void) {
   //***************************************************
 
   //#CS704 - use this to set BLE Device Name
-  NodeName[1] = 'C';
-  NodeName[2] = 'S';
-  NodeName[3] = ' ';
-  NodeName[4] = '7';
-  NodeName[5] = '0';
-  NodeName[6] = '4';
-  NodeName[7] = ' ';
+  NodeName[1] = 'B';
+  NodeName[2] = 'e';
+  NodeName[3] = 'c';
+  NodeName[4] = 'k';
+  NodeName[5] = '7';
+  NodeName[6] = '0';
+  NodeName[7] = '4';
 
   startMag();
   startAcc();
@@ -327,6 +369,7 @@ int main(void) {
       hci_user_evt_proc();
     }
 
+
     //***************************************************
     //***************************************************
     //***************** #CS704 **************************
@@ -338,33 +381,23 @@ int main(void) {
     //#CS704 - ReadSensor gets set every 100ms by Timer TIM4 (TimEnvHandle)
     if (ReadSensor) {
       ReadSensor = 0;
-
       //*********get sensor data**********
       readMag();
       readAcc();
 
       //*********process sensor data*********
 
-      COMP_Value.x++;
-      COMP_Value.y = 120;
-      COMP_Value.Heading += 10;
+      heading = atan2(MAG_Value.y, MAG_Value.x) * 180 / 3.14159;
+      XPRINTF("heading: %d\r\n", (int)heading);
+      //XPRINTF("%d, %d\r\n", MAG_Value.x, MAG_Value.y);
 
-      XPRINTF("**STEP INCREMENTS = %d**\r\n", (int)COMP_Value.x);
+      // COMP_Value.x;
+      // COMP_Value.y;
+      COMP_Value.x = (int)heading + 180;
+
+      //XPRINTF("**STEP INCREMENTS = %d**\r\n", (int)COMP_Value.x); // PRINTER
 
     }
-
-    ACC_Value.x += 1;
-    ACC_Value.y += 1;
-    ACC_Value.z += 1;
-
-    MAG_Value.x += 1;
-    MAG_Value.y += 1;
-    MAG_Value.z += 1;
-
-    COMP_Value.x += 1;
-    COMP_Value.y += 1;
-    COMP_Value.Heading += 1;
-
 
     SendAccGyroMag = 1;
 
@@ -411,7 +444,7 @@ void InitTargetPlatform(void) {
   /* Initialize LED */
   BSP_LED_Init(LED1);
 
-  InitLSM(); //N4S
+  InitLSM(); //N4S  //TODO: Fix maybe
 }
 
 
