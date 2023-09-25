@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    main.h 
+  * @file    main.h
   * @author  System Research & Applications Team - Catania Lab.
   * @version 4.2.0
   * @date    07-Feb-2022
@@ -18,7 +18,7 @@
   ******************************************************************************
   */
 
-/* Define to prevent recursive inclusion -------------------------------------*/
+  /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
 
@@ -48,11 +48,11 @@ extern void Error_Handler(void);
 //extern unsigned char SaveMagnetoCalibrationToMemory(void);
 
 #ifdef ALLMEMS1_ENABLE_SD_CARD_LOGGING
-  extern void RTC_DataConfig(uint8_t WeekDay, uint8_t Date, uint8_t Month, uint8_t Year);
-  extern void RTC_TimeConfig(uint8_t Hours, uint8_t Minutes, uint8_t Seconds);
-  extern void RTC_AlarmConfig(uint8_t StepHour, uint8_t StepMin, uint8_t StepSec);
+extern void RTC_DataConfig(uint8_t WeekDay, uint8_t Date, uint8_t Month, uint8_t Year);
+extern void RTC_TimeConfig(uint8_t Hours, uint8_t Minutes, uint8_t Seconds);
+extern void RTC_AlarmConfig(uint8_t StepHour, uint8_t StepMin, uint8_t StepSec);
 
-  extern void RTC_GetCurrentDateTime(void);
+extern void RTC_GetCurrentDateTime(void);
 #endif /* ALLMEMS1_ENABLE_SD_CARD_LOGGING */
 
 extern uint8_t BufferToWrite[256];
@@ -77,16 +77,16 @@ extern int32_t BytesToWrite;
 /* Algorithm period for MotionCP, MotionGR, MotionSD, MotionTL and MotionVC [ms] */
 #define ALGO_PERIOD_CP_GR_SD_TL_VC      (1000U / ALGO_FREQ_CP_GR_SD_TL_VC)
 /* 10kHz/50 as defaul value for:
-  MotionCP@50Hz or 
+  MotionCP@50Hz or
   MotionGR@50Hz or
   MotionSD@50Hz or
   MotionTL@50Hz or
   MotionVC@50Hz */
 #define DEFAULT_uhCCR2_Val      (10000U / ALGO_FREQ_CP_GR_SD_TL_VC) 
-/* Code for MotionCP & MotionGR & MotionSD & MotionTL & MotionVC integration - End Section */
+  /* Code for MotionCP & MotionGR & MotionSD & MotionTL & MotionVC integration - End Section */
 
-/* Code for MotionAR & MotionID & MotionPE integration - Start Section */
-/* Algorithm frequency for MotionAR, MotionID and MotionPE libraries [Hz] */
+  /* Code for MotionAR & MotionID & MotionPE integration - Start Section */
+  /* Algorithm frequency for MotionAR, MotionID and MotionPE libraries [Hz] */
 #define ALGO_FREQ_AR_ID_PE      16U
 /* Algorithm period for MotionAR, MotionID and MotionPE libraries [ms] */
 #define ALGO_PERIOD_AR_ID_PE    (1000U / ALGO_FREQ_AR_ID_PE) 
@@ -95,9 +95,9 @@ extern int32_t BytesToWrite;
   MotionID@16Hz
   MotionPE@16Hz  */
 #define DEFAULT_uhCCR3_Val      (10000U / ALGO_FREQ_AR_ID_PE)
-/* Code for MotionAR & MotionID & MotionPE integration - End Section */
+  /* Code for MotionAR & MotionID & MotionPE integration - End Section */
 
-/* Update frequency for Acc/Gyro/Mag sensor [Hz] */
+  /* Update frequency for Acc/Gyro/Mag sensor [Hz] */
 #define FREQ_ACC_GYRO_MAG               20U
 /* Update period for Acc/Gyro/Mag [ms] */
 #define ALGO_PERIOD_ACC_GYRO_MAG        (1000U / FREQ_ACC_GYRO_MAG) 
@@ -109,10 +109,10 @@ extern int32_t BytesToWrite;
 /* Range time without connect before Shut Down Mode starts (20 sec) */
 #define RANGE_TIME_WITHOUT_CONNECTED  20000
 
-typedef struct  {
-	 int16_t x;
-	 int16_t y;
-	 int16_t z;
+typedef struct {
+  int16_t x;
+  int16_t y;
+  int16_t z;
 
 }BSP_MOTION_SENSOR_Axes_t;
 

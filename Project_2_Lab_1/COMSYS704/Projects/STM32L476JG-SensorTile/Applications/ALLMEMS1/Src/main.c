@@ -220,7 +220,7 @@ static void startAcc() { //#CS704 - Write SPI commands to initiliase Acceleromet
   inData = 0b00000000; // No interrupts
   BSP_LSM303AGR_WriteReg_Acc(0x25, &inData, 1);
 
-  inData = 0b00100111; // 10Hz, Not Low Power, all Axii enabled
+  inData = 0b01110111; // 100Hz, Not Low Power, all Axii enabled
   BSP_LSM303AGR_WriteReg_Acc(0x20, &inData, 1);
 }
 
@@ -292,6 +292,42 @@ static void readAcc() {
   //XPRINTF("ACC=%d,%d,%d\r\n", xValue, yValue, zValue); // PRINTER
 }
 
+// No-Motion check
+int steadyMotionCheck(int16_t oldX, int16_t oldY, int16_t oldZ) {
+  int16_t diffX = oldX - ACC_Value.x;
+  int16_t diffY = oldY - ACC_Value.y;
+  int16_t diffZ = oldZ - ACC_Value.z;
+
+  int32_t totalVector = sqrt(ACC_Value.x * ACC_Value.x + ACC_Value.y * ACC_Value.y + ACC_Value.z * ACC_Value.z);
+  int32_t totalVectorOld = sqrt(oldX * oldX + oldY * oldY + oldZ * oldZ);
+
+  int32_t totalDiff = abs(totalVector - totalVectorOld);
+
+  if (totalDiff <= 200) {
+    return 1;
+  } else {
+    return 0;
+  }
+
+}
+
+double computeYaw(double mag_x, double mag_y, double mag_z, double accel_x, double accel_y, double accel_z) {
+  double mDa = mag_x * accel_x + mag_y * accel_y + mag_z * accel_z;
+  double aDa = accel_x * accel_x + accel_y * accel_y + accel_z * accel_z;
+  double dpD = mDa / aDa;
+
+  double down_x = accel_x * dpD;
+  double down_y = accel_y * dpD;
+  double down_z = accel_z * dpD;
+
+  double final_x = mag_x - down_x;
+  double final_y = mag_y - down_y;
+  double final_z = mag_z - down_z;
+
+  double heading = atan2(final_y, final_x) * 180 / 3.141592653589;
+  return heading;
+}
+
 
 
 /**
@@ -300,6 +336,9 @@ static void readAcc() {
   * @retval None
   */
 int main(void) {
+  int16_t oldX = 0;
+  int16_t oldY = 0;
+  int16_t oldZ = 0;
   double heading = 0;
 
   HAL_Init();
@@ -386,14 +425,26 @@ int main(void) {
       readAcc();
 
       //*********process sensor data*********
+      // Detect no movement
+      if (steadyMotionCheck(oldX, oldY, oldZ)) {
+        heading = computeYaw(MAG_Value.x, MAG_Value.y, MAG_Value.z, ACC_Value.x, ACC_Value.y, ACC_Value.z);
+        XPRINTF("heading: %d\r\n", (int)heading);
+      }
 
-      heading = atan2(MAG_Value.y, MAG_Value.x) * 180 / 3.14159;
-      XPRINTF("heading: %d\r\n", (int)heading);
+
+
+      // Update prev values
+      oldX = ACC_Value.x;
+      oldY = ACC_Value.y;
+      oldZ = ACC_Value.z;
+
+
+      //XPRINTF("heading: %d\r\n", (int)heading);
       //XPRINTF("%d, %d\r\n", MAG_Value.x, MAG_Value.y);
 
       // COMP_Value.x;
       // COMP_Value.y;
-      COMP_Value.x = (int)heading + 180;
+      //COMP_Value.Heading = (int)heading + 180;
 
       //XPRINTF("**STEP INCREMENTS = %d**\r\n", (int)COMP_Value.x); // PRINTER
 
