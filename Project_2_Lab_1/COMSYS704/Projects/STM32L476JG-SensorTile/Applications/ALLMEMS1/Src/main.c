@@ -221,6 +221,7 @@ static void startAcc() { //#CS704 - Write SPI commands to initiliase Acceleromet
   BSP_LSM303AGR_WriteReg_Acc(0x25, &inData, 1);
 
   inData = 0b01110111; // 100Hz, Not Low Power, all Axii enabled
+  //inData = 0b00100111; // 10Hz, Not Low Power, all Axii enabled
   BSP_LSM303AGR_WriteReg_Acc(0x20, &inData, 1);
 }
 
@@ -270,6 +271,7 @@ static void readAcc() {
     BSP_LSM303AGR_ReadReg_Acc(0x27, &valueReady, 1); // read acc status reg
     valueReady = valueReady & (1 << 3); // filter for XYZ New bit
   }
+  // LSB AT LOWER ADDRESS
 
   BSP_LSM303AGR_ReadReg_Acc(0x28, &xFirst, 1);
   BSP_LSM303AGR_ReadReg_Acc(0x29, &xSecond, 1);
@@ -280,14 +282,11 @@ static void readAcc() {
   BSP_LSM303AGR_ReadReg_Acc(0x2C, &zFirst, 1);
   BSP_LSM303AGR_ReadReg_Acc(0x2D, &zSecond, 1);
 
-  xValue = (xSecond << 8) | xFirst;
-  yValue = (ySecond << 8) | yFirst;
-  zValue = (zSecond << 8) | zFirst;
+  xValue = ((xSecond << 8) | xFirst);// >> 4;
+  yValue = ((ySecond << 8) | yFirst);// >> 4;
+  zValue = ((zSecond << 8) | zFirst);// >> 4;
 
   //#CS704 - store sensor values into the variables below
-  ACC_Value.x = xValue;
-  ACC_Value.y = yValue;
-  ACC_Value.z = zValue;
 
   //XPRINTF("ACC=%d,%d,%d\r\n", xValue, yValue, zValue); // PRINTER
 }
@@ -312,19 +311,26 @@ int steadyMotionCheck(int16_t oldX, int16_t oldY, int16_t oldZ) {
 }
 
 double computeYaw(double mag_x, double mag_y, double mag_z, double accel_x, double accel_y, double accel_z) {
+  XPRINTF("magx: %d", (int)mag_x);
   double mDa = mag_x * accel_x + mag_y * accel_y + mag_z * accel_z;
+  XPRINTF("mDa: %d", (int)mDa);
   double aDa = accel_x * accel_x + accel_y * accel_y + accel_z * accel_z;
+  XPRINTF("aDa: %d", (int)aDa);
   double dpD = mDa / aDa;
+  XPRINTF("dpD: %d", (int)dpD);
 
   double down_x = accel_x * dpD;
+  XPRINTF("down_x: %d", (int)down_x);
   double down_y = accel_y * dpD;
   double down_z = accel_z * dpD;
 
   double final_x = mag_x - down_x;
+  XPRINTF("final_x: %d", (int)final_x);
   double final_y = mag_y - down_y;
   double final_z = mag_z - down_z;
 
-  double heading = atan2(final_y, final_x) * 180 / 3.141592653589;
+  double heading = atan2(final_x, final_y) * 180 / 3.141592653589;
+  XPRINTF("heading: %d", (int)heading);
   return heading;
 }
 
@@ -336,10 +342,10 @@ double computeYaw(double mag_x, double mag_y, double mag_z, double accel_x, doub
   * @retval None
   */
 int main(void) {
-  int16_t oldX = 0;
-  int16_t oldY = 0;
-  int16_t oldZ = 0;
-  double heading = 0;
+//  int16_t oldX = 0;
+//  int16_t oldY = 0;
+//  int16_t oldZ = 0;
+//  double heading = 0;
 
   HAL_Init();
 
@@ -425,19 +431,21 @@ int main(void) {
       readAcc();
 
       //*********process sensor data*********
+      //heading = computeYaw(100, 40, 20, 10, 10, 90);
+      //XPRINTF("heading: %d\r\n", (int)heading);
+
       // Detect no movement
-      if (steadyMotionCheck(oldX, oldY, oldZ)) {
-        heading = computeYaw(MAG_Value.x, MAG_Value.y, MAG_Value.z, ACC_Value.x, ACC_Value.y, ACC_Value.z);
-        XPRINTF("heading: %d\r\n", (int)heading);
-      }
-
-
+      // if (steadyMotionCheck(oldX, oldY, oldZ)) {
+      //   heading = computeYaw(MAG_Value.x, MAG_Value.y, MAG_Value.z, ACC_Value.x, ACC_Value.y, ACC_Value.z);
+      //   XPRINTF("heading: %d\r\n", (int)heading);
+      // }
 
       // Update prev values
-      oldX = ACC_Value.x;
-      oldY = ACC_Value.y;
-      oldZ = ACC_Value.z;
+      //oldX = ACC_Value.x;
+      //oldY = ACC_Value.y;
+      //oldZ = ACC_Value.z;
 
+      //XPRINTF("Accel Z: %d\r\n", (int)ACC_Value.z);
 
       //XPRINTF("heading: %d\r\n", (int)heading);
       //XPRINTF("%d, %d\r\n", MAG_Value.x, MAG_Value.y);
@@ -448,7 +456,12 @@ int main(void) {
 
       //XPRINTF("**STEP INCREMENTS = %d**\r\n", (int)COMP_Value.x); // PRINTER
 
+      XPRINTF("Accel x; %d\r\n", ACC_Value.x); // PRINTER
+      XPRINTF("Accel y; %d\r\n", ACC_Value.y); // PRINTER
+      XPRINTF("Accel z; %d\r\n", ACC_Value.z); // PRINTER
+
     }
+
 
     SendAccGyroMag = 1;
 
