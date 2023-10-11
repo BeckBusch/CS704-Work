@@ -220,8 +220,7 @@ static void startAcc() { //#CS704 - Write SPI commands to initiliase Acceleromet
   inData = 0b00000000; // No interrupts
   BSP_LSM303AGR_WriteReg_Acc(0x25, &inData, 1);
 
-  inData = 0b01110111; // 100Hz, Not Low Power, all Axii enabled
-  //inData = 0b00100111; // 10Hz, Not Low Power, all Axii enabled
+  inData = 0b00100111; // 10Hz, Not Low Power, all Axii enabled
   BSP_LSM303AGR_WriteReg_Acc(0x20, &inData, 1);
 }
 
@@ -271,7 +270,6 @@ static void readAcc() {
     BSP_LSM303AGR_ReadReg_Acc(0x27, &valueReady, 1); // read acc status reg
     valueReady = valueReady & (1 << 3); // filter for XYZ New bit
   }
-  // LSB AT LOWER ADDRESS
 
   BSP_LSM303AGR_ReadReg_Acc(0x28, &xFirst, 1);
   BSP_LSM303AGR_ReadReg_Acc(0x29, &xSecond, 1);
@@ -282,11 +280,14 @@ static void readAcc() {
   BSP_LSM303AGR_ReadReg_Acc(0x2C, &zFirst, 1);
   BSP_LSM303AGR_ReadReg_Acc(0x2D, &zSecond, 1);
 
-  xValue = ((xSecond << 8) | xFirst);// >> 4;
-  yValue = ((ySecond << 8) | yFirst);// >> 4;
-  zValue = ((zSecond << 8) | zFirst);// >> 4;
+  xValue = (xSecond << 8) | xFirst;
+  yValue = (ySecond << 8) | yFirst;
+  zValue = (zSecond << 8) | zFirst;
 
   //#CS704 - store sensor values into the variables below
+  ACC_Value.x = xValue;
+  ACC_Value.y = yValue;
+  ACC_Value.z = zValue;
 
   //XPRINTF("ACC=%d,%d,%d\r\n", xValue, yValue, zValue); // PRINTER
 }
@@ -456,9 +457,9 @@ int main(void) {
 
       //XPRINTF("**STEP INCREMENTS = %d**\r\n", (int)COMP_Value.x); // PRINTER
 
-      XPRINTF("Accel x; %d\r\n", ACC_Value.x); // PRINTER
-      XPRINTF("Accel y; %d\r\n", ACC_Value.y); // PRINTER
-      XPRINTF("Accel z; %d\r\n", ACC_Value.z); // PRINTER
+      // XPRINTF("Accel x; %d\r\n", ACC_Value.x); // PRINTER
+      // XPRINTF("Accel y; %d\r\n", ACC_Value.y); // PRINTER
+      // XPRINTF("Accel z; %d\r\n", ACC_Value.z); // PRINTER
 
     }
 
