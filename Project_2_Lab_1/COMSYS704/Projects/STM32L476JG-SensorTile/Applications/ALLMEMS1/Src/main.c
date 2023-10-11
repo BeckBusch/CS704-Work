@@ -284,6 +284,10 @@ static void readAcc() {
   yValue = (ySecond << 8) | yFirst;
   zValue = (zSecond << 8) | zFirst;
 
+  xValue = xValue >> 4;
+  yValue = yValue >> 4;
+  zValue = zValue >> 4;
+
   //#CS704 - store sensor values into the variables below
   ACC_Value.x = xValue;
   ACC_Value.y = yValue;
@@ -343,10 +347,10 @@ double computeYaw(double mag_x, double mag_y, double mag_z, double accel_x, doub
   * @retval None
   */
 int main(void) {
-//  int16_t oldX = 0;
-//  int16_t oldY = 0;
-//  int16_t oldZ = 0;
-//  double heading = 0;
+  //  int16_t oldX = 0;
+  //  int16_t oldY = 0;
+  //  int16_t oldZ = 0;
+  //  double heading = 0;
 
   HAL_Init();
 
