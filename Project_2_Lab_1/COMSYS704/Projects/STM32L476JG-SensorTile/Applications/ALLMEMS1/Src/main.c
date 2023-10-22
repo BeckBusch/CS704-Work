@@ -194,10 +194,11 @@ static void InitLSM() {
 static void startMag() { //#CS704 - Write SPI commands to initiliase Magnetometer
   uint8_t inData;
 
-  inData = 0b00000000; // No temp comp, no reboot, no reset, no low power, 10Hz, continous mode
+  inData = 0b10001100; // No temp comp, no reboot, no reset, no low power, 100Hz, continous mode
   BSP_LSM303AGR_WriteReg_Mag(0x60, &inData, 1);
-  inData = 0b00000000; // null, null, null, idk and some other stuff
+  inData = 0b00000011; // null, null, null, idk and some other stuff
   BSP_LSM303AGR_WriteReg_Mag(0x61, &inData, 1);
+  //inData = 0b00010001;
   inData = 0b00000001;
   BSP_LSM303AGR_WriteReg_Mag(0x62, &inData, 1);
 }
@@ -227,16 +228,16 @@ static void startAcc() { //#CS704 - Write SPI commands to initiliase Acceleromet
 static void readMag() { //#CS704 - Read Magnetometer Data over SPI
   int16_t xValue, yValue, zValue;
   uint8_t xFirst, xSecond, yFirst, ySecond, zFirst, zSecond;
-  uint8_t valueReady;
+  // uint8_t valueReady;
 
-  BSP_LSM303AGR_ReadReg_Mag(0x67, &valueReady, 1); // read acc status reg
-  valueReady = valueReady & (1 << 3); // filter for XYZ New bit
+  // BSP_LSM303AGR_ReadReg_Mag(0x67, &valueReady, 1); // read acc status reg
+  // valueReady = valueReady & (1 << 3); // filter for XYZ New bit
 
-  while (!valueReady) { // if value ready bit not ready
-    // recheck value ready
-    BSP_LSM303AGR_ReadReg_Mag(0x27, &valueReady, 1); // read acc status reg
-    valueReady = valueReady & (1 << 3); // filter for XYZ New bit
-  }
+  // while (!valueReady) { // if value ready bit not ready
+  //   // recheck value ready
+  //   BSP_LSM303AGR_ReadReg_Mag(0x27, &valueReady, 1); // read acc status reg
+  //   valueReady = valueReady & (1 << 3); // filter for XYZ New bit
+  // }
 
   BSP_LSM303AGR_ReadReg_Mag(0x68, &xFirst, 1);
   BSP_LSM303AGR_ReadReg_Mag(0x69, &xSecond, 1);
@@ -260,16 +261,16 @@ static void readMag() { //#CS704 - Read Magnetometer Data over SPI
 static void readAcc() {
   int16_t xValue, yValue, zValue;
   uint8_t xFirst, xSecond, yFirst, ySecond, zFirst, zSecond;
-  uint8_t valueReady;
+  // uint8_t valueReady;
 
-  BSP_LSM303AGR_ReadReg_Acc(0x27, &valueReady, 1); // read acc status reg
-  valueReady = valueReady & (1 << 3); // filter for XYZ New bit
+  // BSP_LSM303AGR_ReadReg_Acc(0x27, &valueReady, 1); // read acc status reg
+  // valueReady = valueReady & (1 << 3); // filter for XYZ New bit
 
-  while (!valueReady) { // if value ready bit not ready
-    // recheck value ready
-    BSP_LSM303AGR_ReadReg_Acc(0x27, &valueReady, 1); // read acc status reg
-    valueReady = valueReady & (1 << 3); // filter for XYZ New bit
-  }
+  // while (!valueReady) { // if value ready bit not ready
+  //   // recheck value ready
+  //   BSP_LSM303AGR_ReadReg_Acc(0x27, &valueReady, 1); // read acc status reg
+  //   valueReady = valueReady & (1 << 3); // filter for XYZ New bit
+  // }
 
   BSP_LSM303AGR_ReadReg_Acc(0x28, &xFirst, 1);
   BSP_LSM303AGR_ReadReg_Acc(0x29, &xSecond, 1);
@@ -334,7 +335,7 @@ double computeYaw(double mag_x, double mag_y, double mag_z, double accel_x, doub
   double final_y = mag_y - down_y;
   double final_z = mag_z - down_z;
 
-  double heading = atan2(final_x, final_y) * 180 / 3.141592653589;
+  double heading = atan2((int16_t)final_x, (int16_t)final_y) * (180 / 3.1416);
   XPRINTF("heading: %d", (int)heading);
   return heading;
 }
@@ -441,7 +442,7 @@ int main(void) {
 
       // Detect no movement
       // if (steadyMotionCheck(oldX, oldY, oldZ)) {
-      //   heading = computeYaw(MAG_Value.x, MAG_Value.y, MAG_Value.z, ACC_Value.x, ACC_Value.y, ACC_Value.z);
+        // heading = computeYaw(MAG_Value.x, MAG_Value.y, MAG_Value.z, ACC_Value.x, ACC_Value.y, ACC_Value.z);
       //   XPRINTF("heading: %d\r\n", (int)heading);
       // }
 
@@ -461,9 +462,30 @@ int main(void) {
 
       //XPRINTF("**STEP INCREMENTS = %d**\r\n", (int)COMP_Value.x); // PRINTER
 
-      // XPRINTF("Accel x; %d\r\n", ACC_Value.x); // PRINTER
-      // XPRINTF("Accel y; %d\r\n", ACC_Value.y); // PRINTER
-      // XPRINTF("Accel z; %d\r\n", ACC_Value.z); // PRINTER
+      // double heading = computeYaw(MAG_Value.x, MAG_Value.y, MAG_Value.z, ACC_Value.x, ACC_Value.y, ACC_Value.z);
+      double heading = atan2((int16_t)MAG_Value.y, (int16_t)MAG_Value.x) * 180 / 3.141592;
+      heading = 90 - heading;
+
+      if (heading < 0) {
+        heading = heading + 360;
+      }
+
+      // double heading = atan2(30, 30) * 57.3;
+
+      XPRINTF("Accel x; %d\r\n", ACC_Value.x); // PRINTER
+      XPRINTF("Accel y; %d\r\n", ACC_Value.y); // PRINTER
+      XPRINTF("Accel z; %d\r\n", ACC_Value.z); // PRINTER
+      XPRINTF("Mag x; %d\r\n", MAG_Value.x); // PRINTER
+      XPRINTF("Mag y; %d\r\n", MAG_Value.y); // PRINTER
+      XPRINTF("Mag z; %d\r\n", MAG_Value.z); // PRINTER
+
+      XPRINTF("Heading: %d\r\n", (int)heading);
+
+
+      // ***** Send Stuff to App *****
+      COMP_Value.Heading = heading;
+      COMP_Value.x = 50;
+      COMP_Value.y = 100;
 
     }
 
