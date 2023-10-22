@@ -181,7 +181,7 @@ static void InitLSM() {
   inData[0] = 0x01;
   BSP_LSM303AGR_WriteReg_Acc(0x23, inData, 1);
   inData[0] = 0x20;
-  BSP_LSM303AGR_WriteReg_Mag(0x62U, inData, 1);
+  BSP_LSM303AGR_WriteReg_Mag(0x62, inData, 1);
 
   //Read IAM registers for Acc and Mag to verify connection - READ
   BSP_LSM303AGR_ReadReg_Mag(0x4F, inData, 1);
@@ -397,6 +397,9 @@ int main(void) {
   //***************************************************
 
 
+#define PI 3.141592653589
+
+
 #define STEADY 0
 #define STEPSTART 1
 ////#define STEPFINISH 2
@@ -469,11 +472,12 @@ int main(void) {
         // Basic attempt at heading calculations using a modified arctan function
         calcHeading = atan2((int16_t)MAG_Value.x, (int16_t)MAG_Value.y); // left in radians for c functions
         //// calcHeading = computeYaw(MAG_Value.x, MAG_Value.y, MAG_Value.z, ACC_Value.x, ACC_Value.y, ACC_Value.z);
-        heading = calcHeading * (180 / 3.141592653589);// calculate heading in degrees for display
+        heading = calcHeading * (180 / PI);// calculate heading in degrees for display
         heading = heading - 180;
         if (heading < 0) {
           heading = heading + 360;
         }
+        calcHeading = calcHeading - PI;
 
 
       } else {
@@ -676,7 +680,7 @@ static void InitTimers(void) {
   /* Set TIM4 instance ( Environmental ) */
   TimEnvHandle.Instance = TIM4;
   /* Initialize TIM4 peripheral */
-  TimEnvHandle.Init.Period = 655; //HACK changed this to increase read speed
+  TimEnvHandle.Init.Period = 65;//5; //HACK changed this to increase read speed
   TimEnvHandle.Init.Prescaler = uwPrescalerValue;
   TimEnvHandle.Init.ClockDivision = 0;
   TimEnvHandle.Init.CounterMode = TIM_COUNTERMODE_UP;
