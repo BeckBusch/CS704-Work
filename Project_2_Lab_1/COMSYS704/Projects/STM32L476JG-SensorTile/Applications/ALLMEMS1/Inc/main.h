@@ -110,9 +110,9 @@ extern int32_t BytesToWrite;
 #define RANGE_TIME_WITHOUT_CONNECTED  20000
 
 typedef struct {
-  int16_t x;
-  int16_t y;
-  int16_t z;
+  uint32_t x;
+  uint32_t y;
+  uint32_t z;
 
 }BSP_MOTION_SENSOR_Axes_t;
 

@@ -144,15 +144,24 @@ static volatile uint32_t SendAccGyroMag = 0;
 static volatile uint32_t TimeStamp = 0;
 volatile uint32_t HCI_ProcessEvent = 0;
 typedef struct {
-  uint16_t x;
-  uint16_t y;
-  uint16_t Heading;
+  uint32_t x;
+  uint32_t y;
+  uint32_t Heading;
 }COMP_Data;
 BSP_MOTION_SENSOR_Axes_t ACC_Value;
 COMP_Data COMP_Value;
 BSP_MOTION_SENSOR_Axes_t MAG_Value;
 /* Private function prototypes -----------------------------------------------*/
 static void SystemClock_Config(void);
+
+typedef struct {
+  int32_t x;
+  int32_t y;
+  int32_t z;
+}SensorWorkingValues;
+
+volatile SensorWorkingValues ACCWorkingValues;
+volatile SensorWorkingValues MAGWorkingValues;
 
 static void Init_BlueNRG_Custom_Services(void);
 static void Init_BlueNRG_Stack(void);
@@ -185,9 +194,9 @@ static void InitLSM() {
 
   //Read IAM registers for Acc and Mag to verify connection - READ
   BSP_LSM303AGR_ReadReg_Mag(0x4F, inData, 1);
-  XPRINTF("IAM Mag= %d,%d", inData[0], inData[1]); // PRINTER
+  // XPRINTF("IAM Mag= %d,%d", inData[0], inData[1]); // PRINTER
   BSP_LSM303AGR_ReadReg_Acc(0x0F, inData, 1);
-  XPRINTF("IAM Acc= %d,%d", inData[0], inData[1]); // PRINTER
+  // XPRINTF("IAM Acc= %d,%d", inData[0], inData[1]); // PRINTER
 }
 
 
@@ -253,9 +262,9 @@ static void readMag() { //#CS704 - Read Magnetometer Data over SPI
   zValue = (zSecond << 8) | zFirst;
 
   //#CS704 - store sensor values into the variables below
-  MAG_Value.x = xValue;
-  MAG_Value.y = yValue;
-  MAG_Value.z = zValue;
+  MAGWorkingValues.x = xValue;
+  MAGWorkingValues.y = yValue;
+  MAGWorkingValues.z = zValue;
 }
 
 static void readAcc() {
@@ -290,20 +299,20 @@ static void readAcc() {
   zValue = zValue >> 4;
 
   //#CS704 - store sensor values into the variables below
-  ACC_Value.x = xValue;
-  ACC_Value.y = yValue;
-  ACC_Value.z = zValue;
+  ACCWorkingValues.x = xValue;
+  ACCWorkingValues.y = yValue;
+  ACCWorkingValues.z = zValue;
 
   ////XPRINTF("ACC=%d,%d,%d\r\n", xValue, yValue, zValue); // PRINTER
 }
 
 // No-Motion check
 int steadyMotionCheck(int16_t oldX, int16_t oldY, int16_t oldZ) {
-  int16_t diffX = oldX - ACC_Value.x;
-  int16_t diffY = oldY - ACC_Value.y;
-  int16_t diffZ = oldZ - ACC_Value.z;
+  int16_t diffX = oldX - ACCWorkingValues.x;
+  int16_t diffY = oldY - ACCWorkingValues.y;
+  int16_t diffZ = oldZ - ACCWorkingValues.z;
 
-  int32_t totalVector = sqrt(ACC_Value.x * ACC_Value.x + ACC_Value.y * ACC_Value.y + ACC_Value.z * ACC_Value.z);
+  int32_t totalVector = sqrt(ACCWorkingValues.x * ACCWorkingValues.x + ACCWorkingValues.y * ACCWorkingValues.y + ACCWorkingValues.z * ACCWorkingValues.z);
   int32_t totalVectorOld = sqrt(oldX * oldX + oldY * oldY + oldZ * oldZ);
 
   int32_t totalDiff = abs(totalVector - totalVectorOld);
@@ -416,10 +425,12 @@ int main(void) {
   uint16_t stepCount = 0;
   double lastAverageAccel = 512;
   uint8_t stepState = STEADY;
-  double xDistance, yDistance, averageAccel;
+  int32_t xDistance = 0;
+  int32_t yDistance = 0; 
+  double averageAccel;
   double heading = 0;
   double calcHeading = 0;
-  double strideLength = USERHEIGHT * HeightStrideRatio;
+  uint8_t strideLength = USERHEIGHT * HeightStrideRatio;
   uint8_t sensorLevel;
 
   /* Infinite loop */
@@ -453,7 +464,6 @@ int main(void) {
 
     //#CS704 - ReadSensor gets set every 100ms by Timer TIM4 (TimEnvHandle)
     if (ReadSensor) {
-
       ReadSensor = 0;
 
       //*********get sensor data**********
@@ -462,16 +472,16 @@ int main(void) {
 
 
       //*********process sensor data*********
-      ACC_Value.z -= 1000; // remove the effects of gravity on a level sensor
+      ACCWorkingValues.z -= 1000; // remove the effects of gravity on a level sensor
 
-      if ((ACC_Value.z > LevelAccelLower) && (ACC_Value.z < LevelAccelUpper)) { // Sensor is level
+      if ((ACCWorkingValues.z > LevelAccelLower) && (ACCWorkingValues.z < LevelAccelUpper)) { // Sensor is level
         // XPRINTF("LEVEL\r\n"); // PRINTER
         sensorLevel = 1;
 
         // **** Heading ****
         // Basic attempt at heading calculations using a modified arctan function
-        calcHeading = atan2((int16_t)MAG_Value.x, (int16_t)MAG_Value.y); // left in radians for c functions
-        //// calcHeading = computeYaw(MAG_Value.x, MAG_Value.y, MAG_Value.z, ACC_Value.x, ACC_Value.y, ACC_Value.z);
+        calcHeading = atan2((int16_t)MAGWorkingValues.x, (int16_t)MAGWorkingValues.y); // left in radians for c functions
+        //// calcHeading = computeYaw(MAGWorkingValues.x, MAGWorkingValues.y, MAGWorkingValues.z, ACCWorkingValues.x, ACCWorkingValues.y, ACCWorkingValues.z);
         heading = calcHeading * (180 / PI);// calculate heading in degrees for display
         heading = heading - 180;
         if (heading < 0) {
@@ -491,7 +501,7 @@ int main(void) {
       for (int i = 0; i < averageCount - 1; i++) {
         pastAccel[averageCount - 1 - i] = pastAccel[averageCount - 1 - i - 1];
       }
-      pastAccel[0] = ACC_Value.z;
+      pastAccel[0] = ACCWorkingValues.z;
 
       // Calculate average acceleration over last n reads
       averageAccel = 0;
@@ -530,34 +540,48 @@ int main(void) {
       // ********** Outputs **********
       // **** Serial Prints ****
 
-      XPRINTF("Heading: %03d, X: %05.2d, Y: %05.2d, Steps: %03d \r\n",
-        (int)heading, (int)xDistance, (int)yDistance, stepCount); // PRINTER
+      // XPRINTF("Heading: %03d, X: %05.2d, Y: %05.2d, Steps: %03d \r\n",
+      //   (int)heading, (int)xDistance, (int)yDistance, stepCount); // PRINTER
 
       // if (sensorLevel) {
       //   XPRINTF("Compass Heading: %d\r\n", (int)heading);
-      //   XPRINTF("Accel z; %d\r\n", ACC_Value.z); // PRINTER
+      //   XPRINTF("Accel z; %d\r\n", ACCWorkingValues.z); // PRINTER
       // }
 
       // XPRINTF("Steps: %d\r\n", stepCount); // PRINTER
       // XPRINTF("Average Accel: %d\r\n", (int)averageAccel); // PRINTER
-      // XPRINTF("Accel x; %d\r\n", ACC_Value.x); // PRINTER
-      // XPRINTF("Accel y; %d\r\n", ACC_Value.y); // PRINTER
-      // XPRINTF("Accel z; %d\r\n", ACC_Value.z); // PRINTER
-      // XPRINTF("Mag x; %d\r\n", MAG_Value.x); // PRINTER
-      // XPRINTF("Mag y; %d\r\n", MAG_Value.y); // PRINTER
-      // XPRINTF("Mag z; %d\r\n", MAG_Value.z); // PRINTER
+      // XPRINTF("Accel x; %d\r\n", ACCWorkingValues.x); // PRINTER
+      // XPRINTF("Accel y; %d\r\n", ACCWorkingValues.y); // PRINTER
+      // XPRINTF("Accel z; %d\r\n", ACCWorkingValues.z); // PRINTER
+      // XPRINTF("Mag x; %d\r\n", MAGWorkingValues.x); // PRINTER
+      // XPRINTF("Mag y; %d\r\n", MAGWorkingValues.y); // PRINTER
+      // XPRINTF("Mag z; %d\r\n", MAGWorkingValues.z); // PRINTER
       // XPRINTF("Compass Heading: %d\r\n", (int)heading);
       // XPRINTF("number Heading: %d\r\n", (int)calcHeading);
 
 
       // ***** Send Stuff to App *****
-      COMP_Value.Heading = (int16_t)heading;
-      // COMP_Value.x = (int16_t)xDistance;
-      // COMP_Value.y = (int16_t)yDistance;
-      MAG_Value.x = (int16_t)stepCount;
-    }
+      // uint32_t = int32_t
+      ACC_Value.x = ACCWorkingValues.x; // Working
+      ACC_Value.y = ACCWorkingValues.y; // Missing
+      ACC_Value.z = ACCWorkingValues.z; // Working
 
-    SendAccGyroMag = 1;
+      // MAG_Value.x = MAGWorkingValues.x; // Working
+      // MAG_Value.y = MAGWorkingValues.y; // Missing
+      // MAG_Value.z = MAGWorkingValues.z; // Broken
+
+      MAG_Value.x = 23;
+      MAG_Value.y = 29; // missing
+      MAG_Value.z = 31; // displaying 29
+      COMP_Value.x = 37;
+      COMP_Value.y = 41;
+      COMP_Value.Heading =430;
+
+      // COMP Values not rly showing up in app so testing with magnet instead
+      // COMP_Value.x = (int32_t) xDistance; // working
+      // COMP_Value.y = (int32_t) yDistance; // Missing
+      // COMP_Value.Heading = (int32_t) heading;
+    }
 
     //***************************************************
     //***************************************************
