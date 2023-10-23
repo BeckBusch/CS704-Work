@@ -198,8 +198,8 @@ static void InitLSM() {
 #define STEPSTART 1
 
 //? limits for detecting a step and detecting when the device is level
-#define AccelLimitUp 45
-#define AccelLimitDown -5
+#define AccelLimitUp 150
+#define AccelLimitDown -100
 #define LevelAccelLower 25
 #define LevelAccelUpper 30
 
@@ -238,6 +238,10 @@ uint8_t stepState = STEADY;
 double calcHeading = 0;
 uint8_t strideLength = USERHEIGHT * HeightStrideRatio;
 uint8_t sensorLevel;
+
+//? Values for keeping track of initial heading
+uint8_t initialHeading = 1;
+double headingOffset = 0;
 
 
 //? Function to initalise the Magnetometer with the best settings for our functionality 
@@ -446,6 +450,7 @@ int main(void) {
   startMag();
   startAcc();
 
+
   //***************************************************
   //***************************************************
   //************ Initialise ends **********************
@@ -500,13 +505,21 @@ int main(void) {
         // **** Heading ****
         //? Basic attempt at heading calculations using a modified arctan function
         calcHeading = atan2((int16_t)MAGWorkingValues.x, (int16_t)MAGWorkingValues.y); //? left in radians for c functions
+        XPRINTF("Compass Heading: %d\r\n", (int)heading); // PRINTER
+
+        calcHeading = calcHeading - headingOffset; //? apply initial heading offest
         //// calcHeading = computeYaw(MAGWorkingValues.x, MAGWorkingValues.y, MAGWorkingValues.z, ACCWorkingValues.x, ACCWorkingValues.y, ACCWorkingValues.z);
         heading = calcHeading * (180 / PI);//? calculate heading in degrees for display
-        heading = heading - 180;
+        ////heading = heading - 180;
         if (heading < 0) {
           heading = heading + 360;
         }
-        calcHeading = calcHeading - PI;
+        ////calcHeading = calcHeading - PI;
+
+        if (initialHeading) { //? If its the first time calculating the heading
+          headingOffset = calcHeading; //? set the offset value
+          initialHeading = 0;
+        }
 
 
       } else {
@@ -518,28 +531,30 @@ int main(void) {
       // **** Step Detection ****
 
       //? cycle the values in the buffer
-      for (int i = 0; i < averageCount - 1; i++) {
-        pastAccel[averageCount - 1 - i] = pastAccel[averageCount - 1 - i - 1];
-      }
-      pastAccel[0] = ACCWorkingValues.z;
+      // for (int i = 0; i < averageCount - 1; i++) {
+      //   pastAccel[averageCount - 1 - i] = pastAccel[averageCount - 1 - i - 1];
+      // }
+      // pastAccel[0] = ACCWorkingValues.z;
 
       //? Calculate average acceleration over last n reads
-      averageAccel = 0;
-      for (int i = 0; i < averageCount; i++) {
-        averageAccel += pastAccel[i];
-      }
-      averageAccel = averageAccel / averageCount;
+      // averageAccel = 0;
+      // for (int i = 0; i < averageCount; i++) {
+      //   averageAccel += pastAccel[i];
+      // }
+      // averageAccel = averageAccel / averageCount;
 
       switch (stepState) {
       case (STEADY): //? waiting for user to rise at the begining of a step
-        if (averageAccel >= AccelLimitUp) {
+        if (ACCWorkingValues.z >= 300) {
           stepState = STEPSTART;
         }
         break;
 
       case (STEPSTART): //? waiting for user to fall at the end of a step
-        if (averageAccel <= AccelLimitDown) {
+        if (ACCWorkingValues.z <= -100) {
           stepCount++;
+          //!BSP_LED_Toggle(LED1);
+
           //? North-South is y direction
           //? East-West is x direction
           //? COS angle * hyp = y
