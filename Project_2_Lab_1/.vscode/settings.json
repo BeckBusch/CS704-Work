@@ -3,6 +3,7 @@
         ".sysj": "SystemJ",
         "*.strl": "esterel",
         "*.sysj": "java",
-        "main.h": "c"
+        "main.h": "c",
+        "cmath": "c"
     }
 }
