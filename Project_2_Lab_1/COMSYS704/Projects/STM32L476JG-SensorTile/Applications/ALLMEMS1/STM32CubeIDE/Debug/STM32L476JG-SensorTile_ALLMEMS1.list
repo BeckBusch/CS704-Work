@@ -3662,290 +3662,289 @@ int main(void) {
  8005eaa:	4b9e      	ldr	r3, [pc, #632]	; (8006124 <main+0x2a4>)
  8005eac:	2200      	movs	r2, #0
  8005eae:	601a      	str	r2, [r3, #0]
-  NodeName[1] = 'B';
+  NodeName[1] = 'b';
  8005eb0:	4b9d      	ldr	r3, [pc, #628]	; (8006128 <main+0x2a8>)
- 8005eb2:	2242      	movs	r2, #66	; 0x42
+ 8005eb2:	2262      	movs	r2, #98	; 0x62
  8005eb4:	f883 23a1 	strb.w	r2, [r3, #929]	; 0x3a1
-  NodeName[2] = 'e';
- 8005eb8:	2265      	movs	r2, #101	; 0x65
- 8005eba:	f883 23a2 	strb.w	r2, [r3, #930]	; 0x3a2
-  NodeName[3] = 'c';
- 8005ebe:	2263      	movs	r2, #99	; 0x63
- 8005ec0:	f883 23a3 	strb.w	r2, [r3, #931]	; 0x3a3
-  NodeName[4] = 'k';
- 8005ec4:	226b      	movs	r2, #107	; 0x6b
- 8005ec6:	f883 23a4 	strb.w	r2, [r3, #932]	; 0x3a4
-  NodeName[5] = '7';
- 8005eca:	2237      	movs	r2, #55	; 0x37
- 8005ecc:	f883 23a5 	strb.w	r2, [r3, #933]	; 0x3a5
-  NodeName[6] = '0';
- 8005ed0:	2230      	movs	r2, #48	; 0x30
- 8005ed2:	f883 23a6 	strb.w	r2, [r3, #934]	; 0x3a6
-  NodeName[7] = '4';
- 8005ed6:	2234      	movs	r2, #52	; 0x34
- 8005ed8:	f883 23a7 	strb.w	r2, [r3, #935]	; 0x3a7
+  NodeName[2] = 'b';
+ 8005eb8:	f883 23a2 	strb.w	r2, [r3, #930]	; 0x3a2
+  NodeName[3] = 'u';
+ 8005ebc:	2275      	movs	r2, #117	; 0x75
+ 8005ebe:	f883 23a3 	strb.w	r2, [r3, #931]	; 0x3a3
+  NodeName[4] = 's';
+ 8005ec2:	2273      	movs	r2, #115	; 0x73
+ 8005ec4:	f883 23a4 	strb.w	r2, [r3, #932]	; 0x3a4
+  NodeName[5] = '6';
+ 8005ec8:	2236      	movs	r2, #54	; 0x36
+ 8005eca:	f883 23a5 	strb.w	r2, [r3, #933]	; 0x3a5
+  NodeName[6] = '9';
+ 8005ece:	2239      	movs	r2, #57	; 0x39
+ 8005ed0:	f883 23a6 	strb.w	r2, [r3, #934]	; 0x3a6
+  NodeName[7] = '2';
+ 8005ed4:	2232      	movs	r2, #50	; 0x32
+ 8005ed6:	f883 23a7 	strb.w	r2, [r3, #935]	; 0x3a7
   startMag();
- 8005edc:	f7ff fb46 	bl	800556c <startMag>
+ 8005eda:	f7ff fb47 	bl	800556c <startMag>
   startAcc();
- 8005ee0:	f7ff fae2 	bl	80054a8 <startAcc>
- 8005ee4:	e0f7      	b.n	80060d6 <main+0x256>
+ 8005ede:	f7ff fae3 	bl	80054a8 <startAcc>
+ 8005ee2:	e0f7      	b.n	80060d4 <main+0x254>
       if (!(HAL_GetTick() & 0x3FF)) {
- 8005ee6:	f000 fe41 	bl	8006b6c <HAL_GetTick>
- 8005eea:	e0f9      	b.n	80060e0 <main+0x260>
+ 8005ee4:	f000 fe42 	bl	8006b6c <HAL_GetTick>
+ 8005ee8:	e0f9      	b.n	80060de <main+0x25e>
       setConnectable();
- 8005eec:	f7ff f81c 	bl	8004f28 <setConnectable>
+ 8005eea:	f7ff f81d 	bl	8004f28 <setConnectable>
       set_connectable = FALSE;
- 8005ef0:	4b8e      	ldr	r3, [pc, #568]	; (800612c <main+0x2ac>)
- 8005ef2:	2200      	movs	r2, #0
- 8005ef4:	701a      	strb	r2, [r3, #0]
- 8005ef6:	e0f8      	b.n	80060ea <main+0x26a>
+ 8005eee:	4b8f      	ldr	r3, [pc, #572]	; (800612c <main+0x2ac>)
+ 8005ef0:	2200      	movs	r2, #0
+ 8005ef2:	701a      	strb	r2, [r3, #0]
+ 8005ef4:	e0f8      	b.n	80060e8 <main+0x268>
       HCI_ProcessEvent = 0;
- 8005ef8:	4b8b      	ldr	r3, [pc, #556]	; (8006128 <main+0x2a8>)
- 8005efa:	2200      	movs	r2, #0
- 8005efc:	f8c3 23a8 	str.w	r2, [r3, #936]	; 0x3a8
+ 8005ef6:	4b8c      	ldr	r3, [pc, #560]	; (8006128 <main+0x2a8>)
+ 8005ef8:	2200      	movs	r2, #0
+ 8005efa:	f8c3 23a8 	str.w	r2, [r3, #936]	; 0x3a8
       hci_user_evt_proc();
- 8005f00:	f005 f91c 	bl	800b13c <hci_user_evt_proc>
- 8005f04:	e0f7      	b.n	80060f6 <main+0x276>
+ 8005efe:	f005 f91d 	bl	800b13c <hci_user_evt_proc>
+ 8005f02:	e0f7      	b.n	80060f4 <main+0x274>
       ReadSensor = 0;
- 8005f06:	4c88      	ldr	r4, [pc, #544]	; (8006128 <main+0x2a8>)
- 8005f08:	2300      	movs	r3, #0
- 8005f0a:	f8c4 30c4 	str.w	r3, [r4, #196]	; 0xc4
+ 8005f04:	4c88      	ldr	r4, [pc, #544]	; (8006128 <main+0x2a8>)
+ 8005f06:	2300      	movs	r3, #0
+ 8005f08:	f8c4 30c4 	str.w	r3, [r4, #196]	; 0xc4
       readMag();
- 8005f0e:	f7ff fe25 	bl	8005b5c <readMag>
+ 8005f0c:	f7ff fe26 	bl	8005b5c <readMag>
       readAcc();
- 8005f12:	f7ff fecd 	bl	8005cb0 <readAcc>
+ 8005f10:	f7ff fece 	bl	8005cb0 <readAcc>
       ACCWorkingValues.z -= 1000; //? remove the effects of gravity on a level sensor
- 8005f16:	8ca3      	ldrh	r3, [r4, #36]	; 0x24
- 8005f18:	f5a3 737a 	sub.w	r3, r3, #1000	; 0x3e8
- 8005f1c:	b21b      	sxth	r3, r3
- 8005f1e:	84a3      	strh	r3, [r4, #36]	; 0x24
+ 8005f14:	8ca3      	ldrh	r3, [r4, #36]	; 0x24
+ 8005f16:	f5a3 737a 	sub.w	r3, r3, #1000	; 0x3e8
+ 8005f1a:	b21b      	sxth	r3, r3
+ 8005f1c:	84a3      	strh	r3, [r4, #36]	; 0x24
       if ((ACCWorkingValues.z > LevelAccelLower) && (ACCWorkingValues.z < LevelAccelUpper)) { //? Sensor is level
- 8005f20:	8ca3      	ldrh	r3, [r4, #36]	; 0x24
- 8005f22:	b21b      	sxth	r3, r3
- 8005f24:	2b19      	cmp	r3, #25
- 8005f26:	dd03      	ble.n	8005f30 <main+0xb0>
- 8005f28:	8ca3      	ldrh	r3, [r4, #36]	; 0x24
- 8005f2a:	b21b      	sxth	r3, r3
- 8005f2c:	2b1d      	cmp	r3, #29
- 8005f2e:	dd28      	ble.n	8005f82 <main+0x102>
+ 8005f1e:	8ca3      	ldrh	r3, [r4, #36]	; 0x24
+ 8005f20:	b21b      	sxth	r3, r3
+ 8005f22:	2b19      	cmp	r3, #25
+ 8005f24:	dd03      	ble.n	8005f2e <main+0xae>
+ 8005f26:	8ca3      	ldrh	r3, [r4, #36]	; 0x24
+ 8005f28:	b21b      	sxth	r3, r3
+ 8005f2a:	2b1d      	cmp	r3, #29
+ 8005f2c:	dd28      	ble.n	8005f80 <main+0x100>
         sensorLevel = 0;
- 8005f30:	2000      	movs	r0, #0
- 8005f32:	4b7d      	ldr	r3, [pc, #500]	; (8006128 <main+0x2a8>)
- 8005f34:	f883 03ac 	strb.w	r0, [r3, #940]	; 0x3ac
+ 8005f2e:	2000      	movs	r0, #0
+ 8005f30:	4b7d      	ldr	r3, [pc, #500]	; (8006128 <main+0x2a8>)
+ 8005f32:	f883 03ac 	strb.w	r0, [r3, #940]	; 0x3ac
         BSP_LED_Off(LED1);
- 8005f38:	f000 fc80 	bl	800683c <BSP_LED_Off>
+ 8005f36:	f000 fc81 	bl	800683c <BSP_LED_Off>
       switch (stepState) {
- 8005f3c:	4b7a      	ldr	r3, [pc, #488]	; (8006128 <main+0x2a8>)
- 8005f3e:	f893 33c8 	ldrb.w	r3, [r3, #968]	; 0x3c8
- 8005f42:	2b00      	cmp	r3, #0
- 8005f44:	d070      	beq.n	8006028 <main+0x1a8>
- 8005f46:	2b01      	cmp	r3, #1
- 8005f48:	d079      	beq.n	800603e <main+0x1be>
+ 8005f3a:	4b7b      	ldr	r3, [pc, #492]	; (8006128 <main+0x2a8>)
+ 8005f3c:	f893 33c8 	ldrb.w	r3, [r3, #968]	; 0x3c8
+ 8005f40:	2b00      	cmp	r3, #0
+ 8005f42:	d070      	beq.n	8006026 <main+0x1a6>
+ 8005f44:	2b01      	cmp	r3, #1
+ 8005f46:	d079      	beq.n	800603c <main+0x1bc>
       ACC_Value.x = ACCWorkingValues.x;
- 8005f4a:	4c77      	ldr	r4, [pc, #476]	; (8006128 <main+0x2a8>)
- 8005f4c:	8c23      	ldrh	r3, [r4, #32]
- 8005f4e:	8323      	strh	r3, [r4, #24]
+ 8005f48:	4c77      	ldr	r4, [pc, #476]	; (8006128 <main+0x2a8>)
+ 8005f4a:	8c23      	ldrh	r3, [r4, #32]
+ 8005f4c:	8323      	strh	r3, [r4, #24]
       ACC_Value.y = ACCWorkingValues.y;
- 8005f50:	8c63      	ldrh	r3, [r4, #34]	; 0x22
- 8005f52:	8363      	strh	r3, [r4, #26]
+ 8005f4e:	8c63      	ldrh	r3, [r4, #34]	; 0x22
+ 8005f50:	8363      	strh	r3, [r4, #26]
       ACC_Value.z = ACCWorkingValues.z;
- 8005f54:	8ca3      	ldrh	r3, [r4, #36]	; 0x24
- 8005f56:	83a3      	strh	r3, [r4, #28]
+ 8005f52:	8ca3      	ldrh	r3, [r4, #36]	; 0x24
+ 8005f54:	83a3      	strh	r3, [r4, #28]
       MAG_Value.x = MAGWorkingValues.x;
- 8005f58:	f8b4 30c8 	ldrh.w	r3, [r4, #200]	; 0xc8
- 8005f5c:	8123      	strh	r3, [r4, #8]
+ 8005f56:	f8b4 30c8 	ldrh.w	r3, [r4, #200]	; 0xc8
+ 8005f5a:	8123      	strh	r3, [r4, #8]
       MAG_Value.y = MAGWorkingValues.y;
- 8005f5e:	f8b4 30ca 	ldrh.w	r3, [r4, #202]	; 0xca
- 8005f62:	8163      	strh	r3, [r4, #10]
+ 8005f5c:	f8b4 30ca 	ldrh.w	r3, [r4, #202]	; 0xca
+ 8005f60:	8163      	strh	r3, [r4, #10]
       MAG_Value.z = MAGWorkingValues.z;
- 8005f64:	f8b4 30cc 	ldrh.w	r3, [r4, #204]	; 0xcc
- 8005f68:	81a3      	strh	r3, [r4, #12]
+ 8005f62:	f8b4 30cc 	ldrh.w	r3, [r4, #204]	; 0xcc
+ 8005f66:	81a3      	strh	r3, [r4, #12]
       COMP_Value.x = (int16_t)xDistance;
- 8005f6a:	f8b4 33cc 	ldrh.w	r3, [r4, #972]	; 0x3cc
- 8005f6e:	8223      	strh	r3, [r4, #16]
+ 8005f68:	f8b4 33cc 	ldrh.w	r3, [r4, #972]	; 0x3cc
+ 8005f6c:	8223      	strh	r3, [r4, #16]
       COMP_Value.y = (int16_t)yDistance;
- 8005f70:	f8b4 33d0 	ldrh.w	r3, [r4, #976]	; 0x3d0
- 8005f74:	8263      	strh	r3, [r4, #18]
+ 8005f6e:	f8b4 33d0 	ldrh.w	r3, [r4, #976]	; 0x3d0
+ 8005f72:	8263      	strh	r3, [r4, #18]
       COMP_Value.Heading = (int16_t)heading;
- 8005f76:	e9d4 01ee 	ldrd	r0, r1, [r4, #952]	; 0x3b8
- 8005f7a:	f7fe fdcf 	bl	8004b1c <__aeabi_d2iz>
- 8005f7e:	82a0      	strh	r0, [r4, #20]
- 8005f80:	e0bf      	b.n	8006102 <main+0x282>
+ 8005f74:	e9d4 01ee 	ldrd	r0, r1, [r4, #952]	; 0x3b8
+ 8005f78:	f7fe fdd0 	bl	8004b1c <__aeabi_d2iz>
+ 8005f7c:	82a0      	strh	r0, [r4, #20]
+ 8005f7e:	e0bf      	b.n	8006100 <main+0x280>
         sensorLevel = 1;
- 8005f82:	2301      	movs	r3, #1
- 8005f84:	f884 33ac 	strb.w	r3, [r4, #940]	; 0x3ac
+ 8005f80:	2301      	movs	r3, #1
+ 8005f82:	f884 33ac 	strb.w	r3, [r4, #940]	; 0x3ac
         BSP_LED_On(LED1);
- 8005f88:	2000      	movs	r0, #0
- 8005f8a:	f000 fc39 	bl	8006800 <BSP_LED_On>
+ 8005f86:	2000      	movs	r0, #0
+ 8005f88:	f000 fc3a 	bl	8006800 <BSP_LED_On>
         calcHeading = atan2((int16_t)MAGWorkingValues.x, (int16_t)MAGWorkingValues.y); //? left in radians for c functions
- 8005f8e:	f8b4 80c8 	ldrh.w	r8, [r4, #200]	; 0xc8
- 8005f92:	fa0f f888 	sxth.w	r8, r8
- 8005f96:	f8b4 00ca 	ldrh.w	r0, [r4, #202]	; 0xca
- 8005f9a:	b200      	sxth	r0, r0
- 8005f9c:	f7fe faba 	bl	8004514 <__aeabi_i2d>
- 8005fa0:	4606      	mov	r6, r0
- 8005fa2:	460f      	mov	r7, r1
- 8005fa4:	4640      	mov	r0, r8
- 8005fa6:	f7fe fab5 	bl	8004514 <__aeabi_i2d>
- 8005faa:	4632      	mov	r2, r6
- 8005fac:	463b      	mov	r3, r7
- 8005fae:	f006 f865 	bl	800c07c <atan2>
- 8005fb2:	e9c4 01ec 	strd	r0, r1, [r4, #944]	; 0x3b0
+ 8005f8c:	f8b4 80c8 	ldrh.w	r8, [r4, #200]	; 0xc8
+ 8005f90:	fa0f f888 	sxth.w	r8, r8
+ 8005f94:	f8b4 00ca 	ldrh.w	r0, [r4, #202]	; 0xca
+ 8005f98:	b200      	sxth	r0, r0
+ 8005f9a:	f7fe fabb 	bl	8004514 <__aeabi_i2d>
+ 8005f9e:	4606      	mov	r6, r0
+ 8005fa0:	460f      	mov	r7, r1
+ 8005fa2:	4640      	mov	r0, r8
+ 8005fa4:	f7fe fab6 	bl	8004514 <__aeabi_i2d>
+ 8005fa8:	4632      	mov	r2, r6
+ 8005faa:	463b      	mov	r3, r7
+ 8005fac:	f006 f866 	bl	800c07c <atan2>
+ 8005fb0:	e9c4 01ec 	strd	r0, r1, [r4, #944]	; 0x3b0
         XPRINTF("Compass Heading: %d\r\n", (int)heading); // PRINTER
- 8005fb6:	e9d4 01ee 	ldrd	r0, r1, [r4, #952]	; 0x3b8
- 8005fba:	f7fe fdaf 	bl	8004b1c <__aeabi_d2iz>
- 8005fbe:	4602      	mov	r2, r0
- 8005fc0:	495b      	ldr	r1, [pc, #364]	; (8006130 <main+0x2b0>)
- 8005fc2:	4668      	mov	r0, sp
- 8005fc4:	f007 fbb8 	bl	800d738 <siprintf>
- 8005fc8:	4601      	mov	r1, r0
- 8005fca:	4668      	mov	r0, sp
- 8005fcc:	f000 fa22 	bl	8006414 <CDC_Fill_Buffer>
+ 8005fb4:	e9d4 01ee 	ldrd	r0, r1, [r4, #952]	; 0x3b8
+ 8005fb8:	f7fe fdb0 	bl	8004b1c <__aeabi_d2iz>
+ 8005fbc:	4602      	mov	r2, r0
+ 8005fbe:	495c      	ldr	r1, [pc, #368]	; (8006130 <main+0x2b0>)
+ 8005fc0:	4668      	mov	r0, sp
+ 8005fc2:	f007 fbb9 	bl	800d738 <siprintf>
+ 8005fc6:	4601      	mov	r1, r0
+ 8005fc8:	4668      	mov	r0, sp
+ 8005fca:	f000 fa23 	bl	8006414 <CDC_Fill_Buffer>
         calcHeading = calcHeading - headingOffset; //? apply initial heading offest
- 8005fd0:	e9d4 23f0 	ldrd	r2, r3, [r4, #960]	; 0x3c0
- 8005fd4:	e9d4 01ec 	ldrd	r0, r1, [r4, #944]	; 0x3b0
- 8005fd8:	f7fe f94e 	bl	8004278 <__aeabi_dsub>
- 8005fdc:	4606      	mov	r6, r0
- 8005fde:	460f      	mov	r7, r1
- 8005fe0:	e9c4 67ec 	strd	r6, r7, [r4, #944]	; 0x3b0
+ 8005fce:	e9d4 23f0 	ldrd	r2, r3, [r4, #960]	; 0x3c0
+ 8005fd2:	e9d4 01ec 	ldrd	r0, r1, [r4, #944]	; 0x3b0
+ 8005fd6:	f7fe f94f 	bl	8004278 <__aeabi_dsub>
+ 8005fda:	4606      	mov	r6, r0
+ 8005fdc:	460f      	mov	r7, r1
+ 8005fde:	e9c4 67ec 	strd	r6, r7, [r4, #944]	; 0x3b0
         heading = calcHeading * (180 / PI);//? calculate heading in degrees for display
- 8005fe4:	a34c      	add	r3, pc, #304	; (adr r3, 8006118 <main+0x298>)
- 8005fe6:	e9d3 2300 	ldrd	r2, r3, [r3]
- 8005fea:	f7fe fafd 	bl	80045e8 <__aeabi_dmul>
- 8005fee:	4680      	mov	r8, r0
- 8005ff0:	4689      	mov	r9, r1
- 8005ff2:	e9c4 89ee 	strd	r8, r9, [r4, #952]	; 0x3b8
+ 8005fe2:	a34d      	add	r3, pc, #308	; (adr r3, 8006118 <main+0x298>)
+ 8005fe4:	e9d3 2300 	ldrd	r2, r3, [r3]
+ 8005fe8:	f7fe fafe 	bl	80045e8 <__aeabi_dmul>
+ 8005fec:	4680      	mov	r8, r0
+ 8005fee:	4689      	mov	r9, r1
+ 8005ff0:	e9c4 89ee 	strd	r8, r9, [r4, #952]	; 0x3b8
         if (heading < 0) {
- 8005ff6:	2200      	movs	r2, #0
- 8005ff8:	2300      	movs	r3, #0
- 8005ffa:	f7fe fd67 	bl	8004acc <__aeabi_dcmplt>
- 8005ffe:	b950      	cbnz	r0, 8006016 <main+0x196>
+ 8005ff4:	2200      	movs	r2, #0
+ 8005ff6:	2300      	movs	r3, #0
+ 8005ff8:	f7fe fd68 	bl	8004acc <__aeabi_dcmplt>
+ 8005ffc:	b950      	cbnz	r0, 8006014 <main+0x194>
         if (initialHeading) { //? If its the first time calculating the heading
- 8006000:	4b4c      	ldr	r3, [pc, #304]	; (8006134 <main+0x2b4>)
- 8006002:	791b      	ldrb	r3, [r3, #4]
- 8006004:	2b00      	cmp	r3, #0
- 8006006:	d099      	beq.n	8005f3c <main+0xbc>
+ 8005ffe:	4b4d      	ldr	r3, [pc, #308]	; (8006134 <main+0x2b4>)
+ 8006000:	791b      	ldrb	r3, [r3, #4]
+ 8006002:	2b00      	cmp	r3, #0
+ 8006004:	d099      	beq.n	8005f3a <main+0xba>
           headingOffset = calcHeading; //? set the offset value
- 8006008:	4b47      	ldr	r3, [pc, #284]	; (8006128 <main+0x2a8>)
- 800600a:	e9c3 67f0 	strd	r6, r7, [r3, #960]	; 0x3c0
+ 8006006:	4b48      	ldr	r3, [pc, #288]	; (8006128 <main+0x2a8>)
+ 8006008:	e9c3 67f0 	strd	r6, r7, [r3, #960]	; 0x3c0
           initialHeading = 0;
- 800600e:	4b49      	ldr	r3, [pc, #292]	; (8006134 <main+0x2b4>)
- 8006010:	2200      	movs	r2, #0
- 8006012:	711a      	strb	r2, [r3, #4]
- 8006014:	e792      	b.n	8005f3c <main+0xbc>
+ 800600c:	4b49      	ldr	r3, [pc, #292]	; (8006134 <main+0x2b4>)
+ 800600e:	2200      	movs	r2, #0
+ 8006010:	711a      	strb	r2, [r3, #4]
+ 8006012:	e792      	b.n	8005f3a <main+0xba>
           heading = heading + 360;
- 8006016:	2200      	movs	r2, #0
- 8006018:	4b47      	ldr	r3, [pc, #284]	; (8006138 <main+0x2b8>)
- 800601a:	4640      	mov	r0, r8
- 800601c:	4649      	mov	r1, r9
- 800601e:	f7fe f92d 	bl	800427c <__adddf3>
- 8006022:	e9c4 01ee 	strd	r0, r1, [r4, #952]	; 0x3b8
- 8006026:	e7eb      	b.n	8006000 <main+0x180>
+ 8006014:	2200      	movs	r2, #0
+ 8006016:	4b48      	ldr	r3, [pc, #288]	; (8006138 <main+0x2b8>)
+ 8006018:	4640      	mov	r0, r8
+ 800601a:	4649      	mov	r1, r9
+ 800601c:	f7fe f92e 	bl	800427c <__adddf3>
+ 8006020:	e9c4 01ee 	strd	r0, r1, [r4, #952]	; 0x3b8
+ 8006024:	e7eb      	b.n	8005ffe <main+0x17e>
         if (ACCWorkingValues.z >= 300) {
- 8006028:	4b3f      	ldr	r3, [pc, #252]	; (8006128 <main+0x2a8>)
- 800602a:	8c9b      	ldrh	r3, [r3, #36]	; 0x24
- 800602c:	b21b      	sxth	r3, r3
- 800602e:	f5b3 7f96 	cmp.w	r3, #300	; 0x12c
- 8006032:	db8a      	blt.n	8005f4a <main+0xca>
+ 8006026:	4b40      	ldr	r3, [pc, #256]	; (8006128 <main+0x2a8>)
+ 8006028:	8c9b      	ldrh	r3, [r3, #36]	; 0x24
+ 800602a:	b21b      	sxth	r3, r3
+ 800602c:	f5b3 7f96 	cmp.w	r3, #300	; 0x12c
+ 8006030:	db8a      	blt.n	8005f48 <main+0xc8>
           stepState = STEPSTART;
- 8006034:	4b3c      	ldr	r3, [pc, #240]	; (8006128 <main+0x2a8>)
- 8006036:	2201      	movs	r2, #1
- 8006038:	f883 23c8 	strb.w	r2, [r3, #968]	; 0x3c8
- 800603c:	e785      	b.n	8005f4a <main+0xca>
+ 8006032:	4b3d      	ldr	r3, [pc, #244]	; (8006128 <main+0x2a8>)
+ 8006034:	2201      	movs	r2, #1
+ 8006036:	f883 23c8 	strb.w	r2, [r3, #968]	; 0x3c8
+ 800603a:	e785      	b.n	8005f48 <main+0xc8>
         if (ACCWorkingValues.z <= -100) {
- 800603e:	4b3a      	ldr	r3, [pc, #232]	; (8006128 <main+0x2a8>)
- 8006040:	8c9b      	ldrh	r3, [r3, #36]	; 0x24
- 8006042:	b21b      	sxth	r3, r3
- 8006044:	f113 0f63 	cmn.w	r3, #99	; 0x63
- 8006048:	f6bf af7f 	bge.w	8005f4a <main+0xca>
+ 800603c:	4b3a      	ldr	r3, [pc, #232]	; (8006128 <main+0x2a8>)
+ 800603e:	8c9b      	ldrh	r3, [r3, #36]	; 0x24
+ 8006040:	b21b      	sxth	r3, r3
+ 8006042:	f113 0f63 	cmn.w	r3, #99	; 0x63
+ 8006046:	f6bf af7f 	bge.w	8005f48 <main+0xc8>
           stepCount++;
- 800604c:	4c36      	ldr	r4, [pc, #216]	; (8006128 <main+0x2a8>)
- 800604e:	f8b4 33ca 	ldrh.w	r3, [r4, #970]	; 0x3ca
- 8006052:	3301      	adds	r3, #1
- 8006054:	f8a4 33ca 	strh.w	r3, [r4, #970]	; 0x3ca
+ 800604a:	4c37      	ldr	r4, [pc, #220]	; (8006128 <main+0x2a8>)
+ 800604c:	f8b4 33ca 	ldrh.w	r3, [r4, #970]	; 0x3ca
+ 8006050:	3301      	adds	r3, #1
+ 8006052:	f8a4 33ca 	strh.w	r3, [r4, #970]	; 0x3ca
           xDistance += sin(calcHeading) * strideLength;
- 8006058:	e9d4 abec 	ldrd	sl, fp, [r4, #944]	; 0x3b0
- 800605c:	4650      	mov	r0, sl
- 800605e:	4659      	mov	r1, fp
- 8006060:	f006 f854 	bl	800c10c <sin>
- 8006064:	4680      	mov	r8, r0
- 8006066:	4689      	mov	r9, r1
- 8006068:	4b32      	ldr	r3, [pc, #200]	; (8006134 <main+0x2b4>)
- 800606a:	7958      	ldrb	r0, [r3, #5]
- 800606c:	f7fe fa52 	bl	8004514 <__aeabi_i2d>
- 8006070:	4606      	mov	r6, r0
- 8006072:	460f      	mov	r7, r1
- 8006074:	4602      	mov	r2, r0
- 8006076:	460b      	mov	r3, r1
- 8006078:	4640      	mov	r0, r8
- 800607a:	4649      	mov	r1, r9
- 800607c:	f7fe fab4 	bl	80045e8 <__aeabi_dmul>
- 8006080:	4680      	mov	r8, r0
- 8006082:	4689      	mov	r9, r1
- 8006084:	f8d4 03cc 	ldr.w	r0, [r4, #972]	; 0x3cc
- 8006088:	f7fe fa44 	bl	8004514 <__aeabi_i2d>
- 800608c:	4642      	mov	r2, r8
- 800608e:	464b      	mov	r3, r9
- 8006090:	f7fe f8f4 	bl	800427c <__adddf3>
- 8006094:	f7fe fd42 	bl	8004b1c <__aeabi_d2iz>
- 8006098:	f8c4 03cc 	str.w	r0, [r4, #972]	; 0x3cc
+ 8006056:	e9d4 abec 	ldrd	sl, fp, [r4, #944]	; 0x3b0
+ 800605a:	4650      	mov	r0, sl
+ 800605c:	4659      	mov	r1, fp
+ 800605e:	f006 f855 	bl	800c10c <sin>
+ 8006062:	4680      	mov	r8, r0
+ 8006064:	4689      	mov	r9, r1
+ 8006066:	4b33      	ldr	r3, [pc, #204]	; (8006134 <main+0x2b4>)
+ 8006068:	7958      	ldrb	r0, [r3, #5]
+ 800606a:	f7fe fa53 	bl	8004514 <__aeabi_i2d>
+ 800606e:	4606      	mov	r6, r0
+ 8006070:	460f      	mov	r7, r1
+ 8006072:	4602      	mov	r2, r0
+ 8006074:	460b      	mov	r3, r1
+ 8006076:	4640      	mov	r0, r8
+ 8006078:	4649      	mov	r1, r9
+ 800607a:	f7fe fab5 	bl	80045e8 <__aeabi_dmul>
+ 800607e:	4680      	mov	r8, r0
+ 8006080:	4689      	mov	r9, r1
+ 8006082:	f8d4 03cc 	ldr.w	r0, [r4, #972]	; 0x3cc
+ 8006086:	f7fe fa45 	bl	8004514 <__aeabi_i2d>
+ 800608a:	4642      	mov	r2, r8
+ 800608c:	464b      	mov	r3, r9
+ 800608e:	f7fe f8f5 	bl	800427c <__adddf3>
+ 8006092:	f7fe fd43 	bl	8004b1c <__aeabi_d2iz>
+ 8006096:	f8c4 03cc 	str.w	r0, [r4, #972]	; 0x3cc
           yDistance += cos(calcHeading) * strideLength;
- 800609c:	4650      	mov	r0, sl
- 800609e:	4659      	mov	r1, fp
- 80060a0:	f005 ffee 	bl	800c080 <cos>
- 80060a4:	4602      	mov	r2, r0
- 80060a6:	460b      	mov	r3, r1
- 80060a8:	4630      	mov	r0, r6
- 80060aa:	4639      	mov	r1, r7
- 80060ac:	f7fe fa9c 	bl	80045e8 <__aeabi_dmul>
- 80060b0:	4606      	mov	r6, r0
- 80060b2:	460f      	mov	r7, r1
- 80060b4:	f8d4 03d0 	ldr.w	r0, [r4, #976]	; 0x3d0
- 80060b8:	f7fe fa2c 	bl	8004514 <__aeabi_i2d>
- 80060bc:	4632      	mov	r2, r6
- 80060be:	463b      	mov	r3, r7
- 80060c0:	f7fe f8dc 	bl	800427c <__adddf3>
- 80060c4:	f7fe fd2a 	bl	8004b1c <__aeabi_d2iz>
- 80060c8:	f8c4 03d0 	str.w	r0, [r4, #976]	; 0x3d0
+ 800609a:	4650      	mov	r0, sl
+ 800609c:	4659      	mov	r1, fp
+ 800609e:	f005 ffef 	bl	800c080 <cos>
+ 80060a2:	4602      	mov	r2, r0
+ 80060a4:	460b      	mov	r3, r1
+ 80060a6:	4630      	mov	r0, r6
+ 80060a8:	4639      	mov	r1, r7
+ 80060aa:	f7fe fa9d 	bl	80045e8 <__aeabi_dmul>
+ 80060ae:	4606      	mov	r6, r0
+ 80060b0:	460f      	mov	r7, r1
+ 80060b2:	f8d4 03d0 	ldr.w	r0, [r4, #976]	; 0x3d0
+ 80060b6:	f7fe fa2d 	bl	8004514 <__aeabi_i2d>
+ 80060ba:	4632      	mov	r2, r6
+ 80060bc:	463b      	mov	r3, r7
+ 80060be:	f7fe f8dd 	bl	800427c <__adddf3>
+ 80060c2:	f7fe fd2b 	bl	8004b1c <__aeabi_d2iz>
+ 80060c6:	f8c4 03d0 	str.w	r0, [r4, #976]	; 0x3d0
           stepState = STEADY;
- 80060cc:	2300      	movs	r3, #0
- 80060ce:	f884 33c8 	strb.w	r3, [r4, #968]	; 0x3c8
- 80060d2:	e73a      	b.n	8005f4a <main+0xca>
+ 80060ca:	2300      	movs	r3, #0
+ 80060cc:	f884 33c8 	strb.w	r3, [r4, #968]	; 0x3c8
+ 80060d0:	e73a      	b.n	8005f48 <main+0xc8>
     __WFI();
- 80060d4:	bf30      	wfi
+ 80060d2:	bf30      	wfi
     if (!connected) {
- 80060d6:	4b13      	ldr	r3, [pc, #76]	; (8006124 <main+0x2a4>)
- 80060d8:	681b      	ldr	r3, [r3, #0]
- 80060da:	2b00      	cmp	r3, #0
- 80060dc:	f43f af03 	beq.w	8005ee6 <main+0x66>
+ 80060d4:	4b13      	ldr	r3, [pc, #76]	; (8006124 <main+0x2a4>)
+ 80060d6:	681b      	ldr	r3, [r3, #0]
+ 80060d8:	2b00      	cmp	r3, #0
+ 80060da:	f43f af03 	beq.w	8005ee4 <main+0x64>
     if (set_connectable) {
- 80060e0:	4b12      	ldr	r3, [pc, #72]	; (800612c <main+0x2ac>)
- 80060e2:	781b      	ldrb	r3, [r3, #0]
- 80060e4:	2b00      	cmp	r3, #0
- 80060e6:	f47f af01 	bne.w	8005eec <main+0x6c>
+ 80060de:	4b13      	ldr	r3, [pc, #76]	; (800612c <main+0x2ac>)
+ 80060e0:	781b      	ldrb	r3, [r3, #0]
+ 80060e2:	2b00      	cmp	r3, #0
+ 80060e4:	f47f af01 	bne.w	8005eea <main+0x6a>
     if (HCI_ProcessEvent) {
- 80060ea:	4b0f      	ldr	r3, [pc, #60]	; (8006128 <main+0x2a8>)
- 80060ec:	f8d3 33a8 	ldr.w	r3, [r3, #936]	; 0x3a8
- 80060f0:	2b00      	cmp	r3, #0
- 80060f2:	f47f af01 	bne.w	8005ef8 <main+0x78>
+ 80060e8:	4b0f      	ldr	r3, [pc, #60]	; (8006128 <main+0x2a8>)
+ 80060ea:	f8d3 33a8 	ldr.w	r3, [r3, #936]	; 0x3a8
+ 80060ee:	2b00      	cmp	r3, #0
+ 80060f0:	f47f af01 	bne.w	8005ef6 <main+0x76>
     if (ReadSensor) {
- 80060f6:	4b0c      	ldr	r3, [pc, #48]	; (8006128 <main+0x2a8>)
- 80060f8:	f8d3 30c4 	ldr.w	r3, [r3, #196]	; 0xc4
- 80060fc:	2b00      	cmp	r3, #0
- 80060fe:	f47f af02 	bne.w	8005f06 <main+0x86>
+ 80060f4:	4b0c      	ldr	r3, [pc, #48]	; (8006128 <main+0x2a8>)
+ 80060f6:	f8d3 30c4 	ldr.w	r3, [r3, #196]	; 0xc4
+ 80060fa:	2b00      	cmp	r3, #0
+ 80060fc:	f47f af02 	bne.w	8005f04 <main+0x84>
     if (SendAccGyroMag) {
- 8006102:	4b09      	ldr	r3, [pc, #36]	; (8006128 <main+0x2a8>)
- 8006104:	6f5b      	ldr	r3, [r3, #116]	; 0x74
- 8006106:	2b00      	cmp	r3, #0
- 8006108:	d0e4      	beq.n	80060d4 <main+0x254>
+ 8006100:	4b09      	ldr	r3, [pc, #36]	; (8006128 <main+0x2a8>)
+ 8006102:	6f5b      	ldr	r3, [r3, #116]	; 0x74
+ 8006104:	2b00      	cmp	r3, #0
+ 8006106:	d0e4      	beq.n	80060d2 <main+0x252>
       SendMotionData();
- 800610a:	f7ff fb6d 	bl	80057e8 <SendMotionData>
+ 8006108:	f7ff fb6e 	bl	80057e8 <SendMotionData>
       SendAccGyroMag = 0;
- 800610e:	4b06      	ldr	r3, [pc, #24]	; (8006128 <main+0x2a8>)
- 8006110:	2200      	movs	r2, #0
- 8006112:	675a      	str	r2, [r3, #116]	; 0x74
- 8006114:	e7de      	b.n	80060d4 <main+0x254>
- 8006116:	bf00      	nop
+ 800610c:	4b06      	ldr	r3, [pc, #24]	; (8006128 <main+0x2a8>)
+ 800610e:	2200      	movs	r2, #0
+ 8006110:	675a      	str	r2, [r3, #116]	; 0x74
+ 8006112:	e7de      	b.n	80060d2 <main+0x252>
+ 8006114:	f3af 8000 	nop.w
  8006118:	1a63c9ec 	.word	0x1a63c9ec
  800611c:	404ca5dc 	.word	0x404ca5dc
  8006120:	200003a0 	.word	0x200003a0

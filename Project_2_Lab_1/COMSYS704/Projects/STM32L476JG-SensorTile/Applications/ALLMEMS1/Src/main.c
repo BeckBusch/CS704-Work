@@ -439,13 +439,13 @@ int main(void) {
   //***************************************************
 
   //#CS704 - use this to set BLE Device Name
-  NodeName[1] = 'B';
-  NodeName[2] = 'e';
-  NodeName[3] = 'c';
-  NodeName[4] = 'k';
-  NodeName[5] = '7';
-  NodeName[6] = '0';
-  NodeName[7] = '4';
+  NodeName[1] = 'b';
+  NodeName[2] = 'b';
+  NodeName[3] = 'u';
+  NodeName[4] = 's';
+  NodeName[5] = '6';
+  NodeName[6] = '9';
+  NodeName[7] = '2';
 
   startMag();
   startAcc();
